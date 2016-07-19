@@ -545,8 +545,7 @@ int SrsMpegtsOverUdp::on_ts_audio(SrsTsMessage* msg, SrsStream* avs)
 
         if (codec.sound_rate == SrsCodecAudioSampleRate5512){
             dts = dts + 1024/5.512;
-        }
-        else if ( codec.sound_rate == SrsCodecAudioSampleRate11025) {
+        } else if ( codec.sound_rate == SrsCodecAudioSampleRate11025) {
             dts = dts + 1024/11.025;
         } else if (codec.sound_rate == SrsCodecAudioSampleRate22050) {
             dts = dts + 1024/22.050;

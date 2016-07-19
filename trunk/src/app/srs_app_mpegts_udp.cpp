@@ -346,7 +346,7 @@ int SrsMpegtsOverUdp::on_ts_video(SrsTsMessage* msg, SrsStream* avs)
 
     // ts tbn to flv tbn.
     u_int32_t dts = msg->dts / 90; 
-    u_int32_t pts = msg->dts / 90;
+    u_int32_t pts = msg->pts / 90;
     
     // send each frame.
     while (!avs->empty()) {
@@ -541,6 +541,19 @@ int SrsMpegtsOverUdp::on_ts_audio(SrsTsMessage* msg, SrsStream* avs)
         codec.aac_packet_type = 1;
         if ((ret = write_audio_raw_frame(frame, frame_size, &codec, dts)) != ERROR_SUCCESS) {
             return ret;
+        }
+
+        if (codec.sound_rate == SrsCodecAudioSampleRate5512){
+            dts = dts + 1024/5.512;
+        }
+        else if ( codec.sound_rate == SrsCodecAudioSampleRate11025) {
+            dts = dts + 1024/11.025;
+        } else if (codec.sound_rate == SrsCodecAudioSampleRate22050) {
+            dts = dts + 1024/22.050;
+        } else if (codec.sound_rate == SrsCodecAudioSampleRate44100) {
+            dts = dts + 1024/44.100;
+        } else {            
+            dts = dts + 1024/44.100;
         }
     }
 
